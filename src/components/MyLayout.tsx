@@ -12,12 +12,76 @@ import {useNavigate, useLocation} from 'react-router-dom';
 
 const {Header, Sider, Content} = Layout;
 
+const siderMenueData = [
+    {
+        key: '/admin/dashboard',
+        icon: <UserOutlined/>,
+        label: '看板',
+    },
+    {
+        key: '/admin/medicine',
+        icon: <VideoCameraOutlined/>,
+        label: '药品管理',
+        children: [
+            {
+                label: '药品分类',
+                key: '/admin/medicine/categories',
+            },
+            {
+                label: '药品列表',
+                key: '/admin/medicine/list',
+            }
+        ]
+    },
+    {
+        key: '/admin/articles',
+        icon: <UploadOutlined/>,
+        label: '文章管理',
+        children: [
+            {
+                label: '文章分类',
+                key: '/admin/articles/categories',
+            },
+            {
+                label: '文章列表',
+                key: '/admin/articles/list',
+            }
+        ]
+    },
+    {
+        key: '/admin/users',
+        icon: <UploadOutlined/>,
+        label: '会员信息',
+    },
+];
+
+const findOpenKeys = (key) => {
+    const result: string[] = [];
+    const findInfo = (arr: any) => {
+        arr.forEach((item: any) => {
+            if (key.includes(item.key)) {
+                result.push(item.key)
+                if (item.children) {
+                    findOpenKeys(item.children)   // 使用递归的方式查找当前页面刷新之后的默认选中项
+                }
+            }
+        })
+    }
+    findInfo(siderMenueData)
+    console.log(result)
+    return result
+}
+
+
 const MyLayout = ({children}: any) => {
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: {colorBgContainer, borderRadiusLG},
     } = theme.useToken();
     const navigate = useNavigate();
+
+    const {pathname} = useLocation()
+    const tmpOpenKeys = findOpenKeys(pathname)
 
     // @ts-ignore
     return (
@@ -32,54 +96,16 @@ const MyLayout = ({children}: any) => {
                 <Menu
                     theme="light"
                     mode="inline"
-                    defaultSelectedKeys={['1']}
+                    // defaultOpenKeys={['/admin/users', '/admin/articles/list']}
+                    // defaultSelectedKeys={['/admin/users', '/admin/articles/list']}
+                    defaultOpenKeys={tmpOpenKeys}
+                    defaultSelectedKeys={tmpOpenKeys}
                     onClick={({key}) => {
                         // alert(key)
                         console.log(key)
                         navigate(key)
                     }}
-                    items={[
-                        {
-                            key: '/admin/dashboard',
-                            icon: <UserOutlined/>,
-                            label: '看板',
-                        },
-                        {
-                            key: '/admin/medicine',
-                            icon: <VideoCameraOutlined/>,
-                            label: '药品管理',
-                            children: [
-                                {
-                                    label: '药品分类',
-                                    key: '/admin/medicine/categories',
-                                },
-                                {
-                                    label: '药品列表',
-                                    key: '/admin/medicine/list',
-                                }
-                            ]
-                        },
-                        {
-                            key: '/admin/articles',
-                            icon: <UploadOutlined/>,
-                            label: '文章管理',
-                            children: [
-                                {
-                                    label: '文章分类',
-                                    key: '/admin/articles/categories',
-                                },
-                                {
-                                    label: '文章列表',
-                                    key: '/admin/articles/list',
-                                }
-                            ]
-                        },
-                        {
-                            key: '/admin/users',
-                            icon: <UploadOutlined/>,
-                            label: '会员信息',
-                        },
-                    ]}
+                    items={siderMenueData}
                 />
             </Sider>
             <Layout>
