@@ -20,7 +20,7 @@ const MyLayout = ({children}: any) => {
     // @ts-ignore
     return (
         <Layout
-            style={{width: '100vw',height: '100vw'}}
+            style={{width: '100vw', height: '100vw'}}
             id='components-layout-demo-custom-trigger'
         >
             <Sider trigger={null} collapsible collapsed={collapsed} style={{background: 'white'}}>
@@ -31,37 +31,49 @@ const MyLayout = ({children}: any) => {
                     theme="light"
                     mode="inline"
                     defaultSelectedKeys={['1']}
+                    onClick={({key}) => {
+                        alert(key)
+                    }}
                     items={[
                         {
-                            key: '1',
+                            key: '/admin/dashboard',
                             icon: <UserOutlined/>,
                             label: '看板',
                         },
                         {
-                            key: '2',
+                            key: '/admin/medicine',
                             icon: <VideoCameraOutlined/>,
                             label: '药品管理',
                             children: [
                                 {
-                                    label: '药品分类' ,
-                                    key: '/admin/medicine_catalogs',
+                                    label: '药品分类',
+                                    key: '/admin/medicine/categories',
                                 },
                                 {
-                                    label: '药品分类1' ,
-                                    key: '/admin/medicine_catalogs1',
+                                    label: '药品列表',
+                                    key: '/admin/medicine/list',
                                 }
                             ]
                         },
                         {
-                            key: '3',
+                            key: '/admin/medicines',
                             icon: <UploadOutlined/>,
                             label: '文章管理',
                             children: [
                                 {
-                                    label: ' 文章分类' ,
-                                    key: '/admin/medicine_catalogs',
+                                    label: '文章分类',
+                                    key: '/admin/medicines/categories',
+                                },
+                                {
+                                    label: '文章列表',
+                                    key: '/admin/medicines/list',
                                 }
                             ]
+                        },
+                        {
+                            key: '/admin/users',
+                            icon: <UploadOutlined/>,
+                            label: '会员信息',
                         },
                     ]}
                 />
