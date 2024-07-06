@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 import {Button, Layout, Menu, theme} from 'antd';
 import logo from '../assets/logo.jpeg'
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const {Header, Sider, Content} = Layout;
 
@@ -16,6 +17,7 @@ const MyLayout = ({children}: any) => {
     const {
         token: {colorBgContainer, borderRadiusLG},
     } = theme.useToken();
+    const navigate = useNavigate();
 
     // @ts-ignore
     return (
@@ -32,7 +34,9 @@ const MyLayout = ({children}: any) => {
                     mode="inline"
                     defaultSelectedKeys={['1']}
                     onClick={({key}) => {
-                        alert(key)
+                        // alert(key)
+                        console.log(key)
+                        navigate(key)
                     }}
                     items={[
                         {
