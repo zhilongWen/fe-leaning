@@ -94,6 +94,7 @@ const MyLayout = ({children}: any) => {
                             height: 64,
                         }}
                     />
+                    <span className='app-title'>好大夫管理系统</span>
                 </Header>
                 <Content
                     style={{
