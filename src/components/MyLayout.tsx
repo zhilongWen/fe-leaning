@@ -60,17 +60,17 @@ const MyLayout = ({children}: any) => {
                             ]
                         },
                         {
-                            key: '/admin/medicines',
+                            key: '/admin/articles',
                             icon: <UploadOutlined/>,
                             label: '文章管理',
                             children: [
                                 {
                                     label: '文章分类',
-                                    key: '/admin/medicines/categories',
+                                    key: '/admin/articles/categories',
                                 },
                                 {
                                     label: '文章列表',
-                                    key: '/admin/medicines/list',
+                                    key: '/admin/articles/list',
                                 }
                             ]
                         },
