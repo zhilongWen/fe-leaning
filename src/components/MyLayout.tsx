@@ -6,9 +6,9 @@ import {
     UserOutlined,
     VideoCameraOutlined,
 } from '@ant-design/icons';
-import {Button, Layout, Menu, theme} from 'antd';
+import {Button, Dropdown, Layout, Menu, theme} from 'antd';
 import logo from '../assets/logo.jpeg'
-import { useNavigate, useLocation } from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 
 const {Header, Sider, Content} = Layout;
 
@@ -95,6 +95,38 @@ const MyLayout = ({children}: any) => {
                         }}
                     />
                     <span className='app-title'>好大夫管理系统</span>
+                    <Dropdown
+                        menu={{
+                            items: [
+                                {
+                                    label: '个人中心',
+                                    key: 'userCenter'
+                                },
+                                {
+                                    label: (
+                                        <span onClick={() => {
+                                            console.log("退出")
+                                            navigate('/')
+                                        }}>
+                                            退出
+                                        </span>
+                                    ),
+                                    key: 'logOut'
+                                }
+                            ]
+                        }}
+                    >
+                        <img
+                            src={logo}
+                            style={{
+                                width: '30px',
+                                borderRadius: '50%',
+                                float: 'right',
+                                marginTop: '16px',
+                                marginRight: '20px',
+                            }}
+                        />
+                    </Dropdown>
                 </Header>
                 <Content
                     style={{
