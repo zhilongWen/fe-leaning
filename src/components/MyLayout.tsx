@@ -17,6 +17,7 @@ const MyLayout = ({children}: any) => {
         token: {colorBgContainer, borderRadiusLG},
     } = theme.useToken();
 
+    // @ts-ignore
     return (
         <Layout
             style={{width: '100vw',height: '100vw'}}
@@ -34,17 +35,33 @@ const MyLayout = ({children}: any) => {
                         {
                             key: '1',
                             icon: <UserOutlined/>,
-                            label: 'nav 1',
+                            label: '看板',
                         },
                         {
                             key: '2',
                             icon: <VideoCameraOutlined/>,
-                            label: 'nav 2',
+                            label: '药品管理',
+                            children: [
+                                {
+                                    label: '药品分类' ,
+                                    key: '/admin/medicine_catalogs',
+                                },
+                                {
+                                    label: '药品分类1' ,
+                                    key: '/admin/medicine_catalogs1',
+                                }
+                            ]
                         },
                         {
                             key: '3',
                             icon: <UploadOutlined/>,
-                            label: 'nav 3',
+                            label: '文章管理',
+                            children: [
+                                {
+                                    label: ' 文章分类' ,
+                                    key: '/admin/medicine_catalogs',
+                                }
+                            ]
                         },
                     ]}
                 />
