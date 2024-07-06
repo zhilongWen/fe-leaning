@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -6,7 +6,7 @@ import {
     UserOutlined,
     VideoCameraOutlined,
 } from '@ant-design/icons';
-import {Button, Dropdown, Layout, Menu, theme} from 'antd';
+import {Breadcrumb, Button, Dropdown, Layout, Menu, theme} from 'antd';
 import logo from '../assets/logo.jpeg'
 import {useNavigate, useLocation} from 'react-router-dom';
 
@@ -72,6 +72,26 @@ const findOpenKeys = (key) => {
     return result
 }
 
+const findDeepPath = (key: string) => {
+    const result: any = []; // 处理完所有的menu数据成为一个一维数组
+    const findInfo = (arr: any) => {
+        arr.forEach((item: any) => {
+            const { children, ...info } = item;
+            result.push(info);
+            if (children) {
+                findInfo(children); // 递归处理子节点
+            }
+        });
+    };
+    findInfo(siderMenueData);
+    // 根据当前传递的key值过滤数据，获取到当前用来显示的menu item数据
+    const tmpData = result.filter((item: any) => key.includes(item.key));
+    if (tmpData.length > 0) {
+        console.log(tmpData)
+        return [{ label: '首页', key: '/admin/dashboard' }, ...tmpData];
+    }
+    return [];
+};
 
 const MyLayout = ({children}: any) => {
     const [collapsed, setCollapsed] = useState(false);
@@ -82,6 +102,13 @@ const MyLayout = ({children}: any) => {
 
     const {pathname} = useLocation()
     const tmpOpenKeys = findOpenKeys(pathname)
+
+    const [breadcrumbs, setBreadcrumbs] = useState<any>([]);
+
+    // 监听pathname的改变，重新这是面包屑数据
+    useEffect(() => {
+        setBreadcrumbs(findDeepPath(pathname));
+    }, [pathname]);
 
     // @ts-ignore
     return (
@@ -163,6 +190,13 @@ const MyLayout = ({children}: any) => {
                         borderRadius: borderRadiusLG,
                     }}
                 >
+                    <Breadcrumb>
+                        {breadcrumbs.map((item: any) => (
+                            <Breadcrumb.Item key={item.key}>{item.label}</Breadcrumb.Item>
+                        ))}
+
+                        {/* <Breadcrumb.Item>Ant Design</Breadcrumb.Item> */}
+                    </Breadcrumb>
                     {children}
                 </Content>
             </Layout>
