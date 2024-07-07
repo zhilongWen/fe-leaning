@@ -5,6 +5,7 @@ import {useState} from "react";
 function MedicineCategories() {
 
     const [isShow, setIsShow] = useState(false) // 控制modal显示和隐藏
+    const [myForm] = Form.useForm(); // 可以获取表单元素实例
 
     return (
         <>
@@ -72,14 +73,17 @@ function MedicineCategories() {
                 maskClosable={false}
                 onCancel={() => setIsShow(false)}
                 onOk={() => {
-                    message.success('保存成功')
+                    // message.success('保存成功')
+                    myForm.submit() // 主动提交表单的提交事件
                 }}
             >
                 <Form
-                    onClick={(v) => {
+                    onFinish={(v) => {
+                        message.success('保存成功')
                         console.log(v)
                     }}
                     labelCol={{span: 3}}
+                    form={myForm}
                 >
                     <Form.Item
                         label='名字'
