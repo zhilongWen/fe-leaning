@@ -94,6 +94,10 @@ function MedicineCategories() {
                                                 type='primary'
                                                 icon={<EditOutlined/>}
                                                 size='small'
+                                                onClick={() => {
+                                                    setIsShow(true)
+                                                    myForm.setFieldsValue(r)
+                                                }}
                                             />
                                             <Button type='primary' icon={<DeleteOutlined/>} size='small' danger/>
                                         </Space>
