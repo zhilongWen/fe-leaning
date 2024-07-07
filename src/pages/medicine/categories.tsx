@@ -25,12 +25,17 @@ function MedicineCategories() {
                 }
             >
                 <Space direction='vertical' style={{width: '100%'}}>
-                    <Form layout='inline'>
-                        <Form.Item label='名字'>
+                    <Form
+                        layout='inline'
+                        onFinish={(v) => {
+                            message.success('查询成功')
+                        }}
+                    >
+                        <Form.Item label='名字' name='name'>
                             <Input placeholder='请输入关键词'/>
                         </Form.Item>
                         <Form.Item>
-                            <Button type='primary' icon={<SearchOutlined/>}/>
+                            <Button type='primary' htmlType='submit' icon={<SearchOutlined/>}/>
                         </Form.Item>
                     </Form>
                     <Table
