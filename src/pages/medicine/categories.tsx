@@ -2,7 +2,7 @@ import {Button, Card, Form, Input, message, Modal, Space, Table} from "antd";
 import {DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined} from '@ant-design/icons'
 import {useEffect, useState} from "react";
 import MyUpload from "../../components/MyUpload.tsx";
-import {loadDataAPI} from "../../service/medicine-categories.ts";
+import {insertAPI, loadDataAPI} from "../../service/medicine-categories.ts";
 import {dalImg} from "../../utils/tools.ts";
 
 function MedicineCategories() {
@@ -87,10 +87,14 @@ function MedicineCategories() {
                                 title: '操作',
                                 width: 100,
                                 align: 'center',
-                                render() {
+                                render(v, r: any) {
                                     return (
                                         <Space>
-                                            <Button type='primary' icon={<EditOutlined/>} size='small'/>
+                                            <Button
+                                                type='primary'
+                                                icon={<EditOutlined/>}
+                                                size='small'
+                                            />
                                             <Button type='primary' icon={<DeleteOutlined/>} size='small' danger/>
                                         </Space>
                                     )
@@ -120,9 +124,13 @@ function MedicineCategories() {
                 <Form
                     // 表单配合modal一起使用的时候，需要设置这个属性，要不然关了窗口之后不会清空数据
                     preserve={false}
-                    onFinish={(v) => {
-                        message.success('保存成功')
+                    onFinish={async (v) => {
                         console.log(v)
+
+                        await insertAPI(v)
+                        message.success('保存成功')
+                        setIsShow(false) // 关闭模态框
+                        setQuery({}) // 刷新数据
                     }}
                     labelCol={{span: 3}}
                     form={myForm}
