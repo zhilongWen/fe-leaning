@@ -73,12 +73,16 @@ function MedicineCategories() {
                 // 点击遮罩层不关闭
                 maskClosable={false}
                 onCancel={() => setIsShow(false)}
+                // 关闭modal的时候清楚数据
+                destroyOnClose
                 onOk={() => {
                     // message.success('保存成功')
                     myForm.submit() // 主动提交表单的提交事件
                 }}
             >
                 <Form
+                    // 表单配合modal一起使用的时候，需要设置这个属性，要不然关了窗口之后不会清空数据
+                    preserve={false}
                     onFinish={(v) => {
                         message.success('保存成功')
                         console.log(v)
