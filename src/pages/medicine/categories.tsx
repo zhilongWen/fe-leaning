@@ -1,6 +1,7 @@
 import {Button, Card, Form, Input, message, Modal, Space, Table} from "antd";
 import {PlusOutlined, SearchOutlined} from '@ant-design/icons'
 import {useState} from "react";
+import MyUpload from "../../components/MyUpload.tsx";
 
 function MedicineCategories() {
 
@@ -97,7 +98,9 @@ function MedicineCategories() {
                     >
                         <Input placeholder='请输入名字'/>
                     </Form.Item>
-                    <Form.Item label='主图'/>
+                    <Form.Item label='主图'>
+                        <MyUpload/>
+                    </Form.Item>
                     <Form.Item label='简介' name='desc'>
                         <Input.TextArea placeholder='请输入简介'/>
                     </Form.Item>
