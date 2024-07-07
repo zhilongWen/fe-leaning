@@ -2,7 +2,7 @@ import {Button, Card, Form, Input, message, Modal, Space, Table} from "antd";
 import {DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined} from '@ant-design/icons'
 import {useEffect, useState} from "react";
 import MyUpload from "../../components/MyUpload.tsx";
-import {insertAPI, loadDataAPI} from "../../service/medicine-categories.ts";
+import {insertAPI, loadDataAPI, updateByIdAPI} from "../../service/medicine-categories.ts";
 import {dalImg} from "../../utils/tools.ts";
 
 function MedicineCategories() {
@@ -13,12 +13,23 @@ function MedicineCategories() {
     const [query, setQuery] = useState({}); // 查询条件
     const [data, setData] = useState([]);
 
+    const [currentId, setCurrentId] = useState(''); // 当前id，如果为空表示新增
+
     useEffect(() => {
         loadDataAPI(query).then((res) => {
             console.log(res)
             setData(res.data)
         })
     }, [query]); // 监听query改变
+
+
+    useEffect(() => {
+        if (!isShow) {
+            // 关闭弹窗之后重置数据
+            setCurrentId('');
+            // setImageUrl('');
+        }
+    }, [isShow]);
 
     return (
         <>
@@ -96,6 +107,7 @@ function MedicineCategories() {
                                                 size='small'
                                                 onClick={() => {
                                                     setIsShow(true)
+                                                    setCurrentId(r.id)      // 通过是否有 id 来区分新增和修改
                                                     myForm.setFieldsValue(r)
                                                 }}
                                             />
@@ -105,6 +117,12 @@ function MedicineCategories() {
                                 }
                             },
                         ]}
+                        pagination={{
+                            defaultCurrent: 1,
+                            defaultPageSize: 10 ,
+                            showSizeChanger: true,
+                            pageSizeOptions: [2,5,10,20,30]
+                        }}
                     >
 
                     </Table>
@@ -129,9 +147,15 @@ function MedicineCategories() {
                     // 表单配合modal一起使用的时候，需要设置这个属性，要不然关了窗口之后不会清空数据
                     preserve={false}
                     onFinish={async (v) => {
-                        console.log(v)
+                        // console.log(v)
+                        // console.log("currentId " + currentId)
 
-                        await insertAPI(v)
+                        if (currentId){   // 通过是否有 id 来区分新增和修改
+                            await updateByIdAPI(currentId,v)
+                        }else{
+                            await insertAPI(v)
+                        }
+
                         message.success('保存成功')
                         setIsShow(false) // 关闭模态框
                         setQuery({}) // 刷新数据
