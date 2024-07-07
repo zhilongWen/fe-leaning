@@ -1,7 +1,8 @@
 import React from "react";
 import {Row, Col, Card, Form, Input, Button, message} from 'antd'
-import {defaultImg} from "../utils/tools.ts";
+import {defaultImg, setToken} from "../utils/tools.ts";
 import {useNavigate} from 'react-router-dom'
+import {loginAPI} from "../service/auth.ts";
 
 function Login() {
     const navigate = useNavigate()
@@ -32,15 +33,24 @@ function Login() {
                                 span: 4,
                             },
                         }}
-                        onFinish={(v) => {
-                            console.log(v)
-                            message.success("登录成功")
-                            navigate('/admin/dashboard')
+                        onFinish={async (v) => {
+                            // console.log(v)
+                            // message.success("登录成功")
+                            // navigate('/admin/dashboard')
+                            const res = await loginAPI(v)
+                            console.log(res)
+                            if (res.success) {
+                                message.success('登录成功')
+                                setToken("1111_token")
+                                navigate('/admin/dashboard')
+                            } else {
+                                message.error(res.errorMessage)
+                            }
                         }}
                     >
                         <Form.Item
                             label='用户名'
-                            name='userName'
+                            name='username'
                             rules={[
                                 {
                                     required: true,

@@ -5,7 +5,7 @@ export const defaultImg = logo;
 /**
  * 服务器地址
  */
-export const serverUrl = 'http://localhost:3006';
+export const serverUrl = 'http://localhost:8099';
 
 /**
  * 设置token
