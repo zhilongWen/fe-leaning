@@ -20,3 +20,12 @@ export const setToken = (token: string) =>
  * @returns
  */
 export const getToken = () => sessionStorage.getItem('token');
+
+export const dalImg = (img: string) => {
+    if (img) {
+        if (img.startsWith('http')) return img;
+        return serverUrl + img;
+    }
+    return defaultImg;
+};
+

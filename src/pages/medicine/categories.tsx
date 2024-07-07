@@ -1,12 +1,24 @@
 import {Button, Card, Form, Input, message, Modal, Space, Table} from "antd";
-import {PlusOutlined, SearchOutlined} from '@ant-design/icons'
-import {useState} from "react";
+import {DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined} from '@ant-design/icons'
+import {useEffect, useState} from "react";
 import MyUpload from "../../components/MyUpload.tsx";
+import {loadDataAPI} from "../../service/medicine-categories.ts";
+import {dalImg} from "../../utils/tools.ts";
 
 function MedicineCategories() {
 
     const [isShow, setIsShow] = useState(false) // 控制modal显示和隐藏
     const [myForm] = Form.useForm(); // 可以获取表单元素实例
+
+    const [query, setQuery] = useState({}); // 查询条件
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        loadDataAPI(query).then((res) => {
+            console.log(res)
+            setData(res.data)
+        })
+    }, [query]); // 监听query改变
 
     return (
         <>
@@ -39,30 +51,50 @@ function MedicineCategories() {
                         </Form.Item>
                     </Form>
                     <Table
+                        dataSource={data}
+                        rowKey='id' // 每行有个不重复的值
                         columns={[
                             {
                                 title: '序号',
                                 width: 80,
-                                align: 'center'
+                                align: 'center',
+                                render(v, r, i) {
+                                    return <>{i + 1}</>;
+                                },
                             },
                             {
                                 title: '名字',
                                 width: 80,
+                                dataIndex: 'name',
                                 align: 'center'
                             },
                             {
                                 title: '主图',
                                 width: 120,
-                                align: 'center'
+                                align: 'center',
+                                render(v, r: any) {
+                                    return (
+                                        <img className='t-img' src={dalImg(r.image)} alt={r.name}/>
+                                    );
+                                },
                             },
                             {
                                 title: '简介',
-                                align: 'center'
+                                align: 'center',
+                                dataIndex: 'desc'
                             },
                             {
                                 title: '操作',
                                 width: 100,
-                                align: 'center'
+                                align: 'center',
+                                render() {
+                                    return (
+                                        <Space>
+                                            <Button type='primary' icon={<EditOutlined/>} size='small'/>
+                                            <Button type='primary' icon={<DeleteOutlined/>} size='small' danger/>
+                                        </Space>
+                                    )
+                                }
                             },
                         ]}
                     >
